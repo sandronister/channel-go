@@ -37,6 +37,8 @@ func main() {
 		println("CDN Channel", msg)
 	case msg := <-viaChannel:
 		println("Via Cep Channel", msg)
+	case <-time.After(time.Second):
+		println("Timeout")
 	}
 
 }
