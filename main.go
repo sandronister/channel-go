@@ -23,7 +23,7 @@ func init() {
 func main() {
 	cdnChannel := make(chan string)
 	viaChannel := make(chan string)
-	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 
 	go cdnService.Get(ctx, cdnChannel, "18050-605")
