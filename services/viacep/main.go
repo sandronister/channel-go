@@ -17,7 +17,7 @@ func New(req domain.RequestService) domain.CepServices {
 	return &cep{request: req}
 }
 
-func (c *cep) Get(ctx context.Context, data chan<- interface{}, cep string) {
+func (c *cep) Get(ctx context.Context, data chan<- string, cep string) {
 	url := fmt.Sprintf("http://viacep.com.br/ws/%s/json/", cep)
 	req := c.request.Get(ctx, url)
 	res, err := http.DefaultClient.Do(req)
@@ -29,5 +29,5 @@ func (c *cep) Get(ctx context.Context, data chan<- interface{}, cep string) {
 	if err != nil {
 		panic(err)
 	}
-	data <- body
+	data <- string(body)
 }
