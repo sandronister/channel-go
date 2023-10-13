@@ -3,8 +3,6 @@ package cdncep
 import (
 	"context"
 	"fmt"
-	"io"
-	"net/http"
 
 	"github.com/sandronister/channel-go/core/domain"
 )
@@ -22,27 +20,16 @@ type Result struct {
 
 type cep struct {
 	request domain.RequestService
+	http    domain.HttpService
 }
 
-func New(req domain.RequestService) domain.CepServices {
-	return &cep{request: req}
+func New(req domain.RequestService, http domain.HttpService) domain.CepServices {
+	return &cep{request: req, http: http}
 }
 
 func (c *cep) Get(ctx context.Context, data chan<- string, cep string) {
 	url := fmt.Sprintf("https://cdn.apicep.com/file/apicep/%s.json", cep)
 	req := c.request.Get(ctx, url)
-
-	res, err := http.DefaultClient.Do(req)
-	if err != nil {
-		panic(err)
-	}
-	defer res.Body.Close()
-
-	body, err := io.ReadAll(res.Body)
-
-	if err != nil {
-		panic(err)
-	}
-
+	body := c.http.Do(req)
 	data <- string(body)
 }

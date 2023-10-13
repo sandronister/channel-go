@@ -12,3 +12,7 @@ type CepServices interface {
 type RequestService interface {
 	Get(ctx context.Context, url string) *http.Request
 }
+
+type HttpService interface {
+	Do(req *http.Request) []byte
+}

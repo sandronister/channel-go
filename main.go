@@ -6,6 +6,7 @@ import (
 
 	"github.com/sandronister/channel-go/core/domain"
 	cdncep "github.com/sandronister/channel-go/services/cndcep"
+	"github.com/sandronister/channel-go/services/httpservice"
 	"github.com/sandronister/channel-go/services/request"
 	"github.com/sandronister/channel-go/services/viacep"
 )
@@ -13,11 +14,13 @@ import (
 var reqService domain.RequestService
 var cdnService domain.CepServices
 var viaService domain.CepServices
+var serviceHttp domain.HttpService
 
 func init() {
 	reqService = request.New()
-	cdnService = cdncep.New(reqService)
-	viaService = viacep.New(reqService)
+	serviceHttp = httpservice.New()
+	cdnService = cdncep.New(reqService, serviceHttp)
+	viaService = viacep.New(reqService, serviceHttp)
 }
 
 func main() {
